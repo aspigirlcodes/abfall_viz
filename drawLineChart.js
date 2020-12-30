@@ -48,6 +48,7 @@ async function drawLineChart(){
                 intersect: false
             },
             tooltips: {
+                enabled:false,
                 intersect: false,
                 mode: 'index'
             },

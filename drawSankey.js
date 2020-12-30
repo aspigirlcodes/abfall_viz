@@ -1,5 +1,5 @@
 
-async function drawChart(year){
+async function drawChart(){
     const dataset = await d3.json("./data.json")
         
     // 2. SET DIMENSIONS
@@ -47,7 +47,8 @@ async function drawChart(year){
         
         sankey()
         // add in the links
-        
+        bounds.selectAll(".link")
+                .remove("title")
         var link = bounds
             .selectAll(".link")
             .data(links(year)(dataset))
@@ -56,8 +57,10 @@ async function drawChart(year){
                 .attr("d", d3.sankeyLinkHorizontal())
                 .style("stroke-width", function(d) { return d.width })
                 .sort(function(a, b) { return b.dy - a.dy; })
+                .append("title").text( d => (d.value * 100).toFixed(2) + "%")
             .exit().remove()
         
+            
 
         // add in the nodes
         var node = bounds
@@ -135,24 +138,26 @@ async function drawChart(year){
 
     //drawData(year)
     
-    d3.select("#year")
-        .on("input", function () {
-            drawData(this.value+"")
-            d3.select("#year_display").html(this.value)
-        })
-    
+        
     drawLineChart().then(([lineChart, lineChartData]) => lineChart.options.hover.onHover= function(event,elements) { 
-        if(elements.length > 0 && elements[0]._index){
+        
+        if(elements.length > 0){
             const value = parseInt(lineChartData[elements[0]._index].year)
-            d3.select("#year").attr("value", value)
+            //d3.select("#year").attr("value", value)
             drawData(value+"")
             d3.select("#year_display").html(value)
+            d3.select("#chart_data").html(`Pro person <b>${lineChartData[elements[0]._index].total}kg</b> Abfall, 
+                wovon <b>${lineChartData[elements[0]._index].rest}kg</b> deponiert oder verbrännt und <b>${lineChartData[elements[0]._index].recycle}kg</b> separat gesammelt.`)
+            elements[0]._xScale._gridLineItems.forEach(d => {d.width = 1; d.color = "rgba(0,0,0,0.25)"})
+            elements[0]._xScale._gridLineItems[elements[0]._index].width = 3 
+            elements[0]._xScale._gridLineItems[elements[0]._index].color = "rgba(0,0,0,0.5)"
+
         }
       })
 }
 
 
 
-drawChart(d3.select("#year").attr("value")+"")
+drawChart()
 
 

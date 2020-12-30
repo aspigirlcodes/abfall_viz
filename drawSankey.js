@@ -4,7 +4,7 @@ async function drawChart(year){
         
     // 2. SET DIMENSIONS
     const dimensions = {
-        width: 400,
+        width: 500,
         height: 100,
         margin: {
             top: 10,
@@ -133,7 +133,7 @@ async function drawChart(year){
             .exit().remove()
     }
 
-    drawData(year)
+    //drawData(year)
     
     d3.select("#year")
         .on("input", function () {
@@ -141,8 +141,14 @@ async function drawChart(year){
             d3.select("#year_display").html(this.value)
         })
     
-
-    
+    drawLineChart().then(([lineChart, lineChartData]) => lineChart.options.hover.onHover= function(event,elements) { 
+        if(elements.length > 0 && elements[0]._index){
+            const value = parseInt(lineChartData[elements[0]._index].year)
+            d3.select("#year").attr("value", value)
+            drawData(value+"")
+            d3.select("#year_display").html(value)
+        }
+      })
 }
 
 

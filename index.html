@@ -17,6 +17,14 @@
     
 </head>
 <body>
+    <div class="intro">
+        <div>
+            <h1>Siedlungsabfälle in der Schweiz.</h1>
+            <h2>1970-2019</h2>
+            <h3>Daten vom BFS, Visualisierung von Sara Peeters</h3>
+        </div>
+        
+    </div>
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
 <div class="center-div chart-text">
@@ -60,7 +68,13 @@
 .link:hover {
   fill-opacity: .8;
 }
-
+.intro{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+}
 .center-div {
     width: 70%;
     margin: 0 15%;
